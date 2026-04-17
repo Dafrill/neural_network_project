@@ -1,10 +1,8 @@
 #--- other--#
 monthly_data
 monthly_data/
-get_ids.py
-clean_dta.py
-filter_data.py
-lite.json
+clean_utils
+clean_utils/
 
 
 
