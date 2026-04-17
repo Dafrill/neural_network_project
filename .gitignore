@@ -12,7 +12,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.pdb
-*.pkl
+
 
 # --- Virtual environment ---
 venv/
