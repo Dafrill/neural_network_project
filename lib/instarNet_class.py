@@ -13,10 +13,10 @@ class InstarNet:
         self.eta = learning_rate
 
     def predict(self, x):
-        """Look for most suitable weights."""
-        
-        activations = np.dot(self.weights, x)
-        winner_index = np.argmax(activations)
+        """Look for most suitable weights - najmniejsza odleglosc."""
+        x = np.array(x)
+        distances = np.linalg.norm(self.weights - x, axis=1)
+        winner_index = np.argmin(distances)
         return winner_index, self.labels[winner_index]
 
     def train_winner(self, x):
