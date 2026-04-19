@@ -1,0 +1,136 @@
+================================================================================
+                    PROJEKT SIECI NEURONOWE
+            KLASYFIKACJA KLIMATOW KOPPEN-GEIGER
+================================================================================
+
+AUTOR: Magda
+DATA: 2026-04-19
+
+================================================================================
+1. OPIS PROBLEMU
+================================================================================
+
+Cel projektu:
+- Implementacja sieci neuronowych do klasyfikacji klimatow
+- Dane: 3987 rekordow ze stacji meteorologicznych
+- Cecha wejsciowa: 24 wartosci (12 temp. + 12 opadow)
+- Klasy wyjsciowe: 5 grup (A,B,C,D,E)
+
+Rozklad klas:
+- A (Tropikalny): 535 probek
+- B (Suchy): 622 probek  
+- C (Podzwrotnikowy): 1515 probek
+- D (Kontynentalny): 1238 probek
+- E (Tundra/Polarny): 77 probek (najmniej!)
+
+================================================================================
+2. PRZEGLAD LITERATURY
+================================================================================
+
+[1] Klasyfikacja Koppen-Geiger (Kottek et al., 2006)
+- Standardowa systematka klimatyczna
+- 5 glownych grup: A, B, C, D, E
+
+[2] Sieci Feed-Forward z BP (Haykin, 2009)
+- Standard do klasyfikacji wzorcow
+- ReLU/Sigmoid jako funkcje aktywacji
+
+[3] Sieci Instar (Kohonen, 1982)
+- Model nienadzorowany
+- Konkurencja pomiedzy neuronami
+
+================================================================================
+3. EKSPERYMENTY I WYNIKI (srednie z 5 uruchomien)
+================================================================================
+
+3.1 WPLYW LICZBY NEURONOW
+-------------------------
+Neurony    Srednia    Odchylenie
+  4       71.23%    1.85%
+  8       73.47%    3.34%
+ 16       63.36%   21.61%
+ 24       75.79%    1.12%   <-- NAJLEPSZE
+ 32       75.49%    2.94%
+
+3.2 WPLYW FUNKCJI AKTYWACJI
+-------------------------
+Sigmoid:  21.19%
+Tanh:     36.36%
+ReLU:    72.60%   <-- NAJLEPSZE
+
+3.3 WPLYW LEARNING RATE
+--------------------
+0.01:    68.20%
+0.05:    73.92%   <-- NAJLEPSZE
+0.10:    55.17%
+0.50:    39.67%
+
+3.4 WPLYW PODZIALU ZBIOROW
+-------------------------
+50% tren: 38.53%
+60% tren: 61.81%
+70% tren: 55.17%
+80% tren: 55.06%
+90% tren: 49.27%
+
+3.5 POROWNANIE MODELI
+--------------------
+Neural Net Improved:   75.10%   (NAJLEPSZY)
+Neural Net v1:        74.85%
+Instar 70/30:        30.50%
+Instar 25/75:        24.99%
+Instar 01/02:        17.71%
+
+3.6 WYNIKI MODELU NEURAL NET IMPROVED
+------------------------------------
+ Grupa        Poprawne   Wszystkie   Dokladnosc
+ A            109        149       73.2%
+ B            164        201       81.6%
+ C            335        435       77.0%
+ D            271        387       70.0%
+ E             20         25       80.0%
+ ----------------------------------------
+ OGOLNA:      899       1197      75.10%
+
+================================================================================
+4. ARCHITEKTURA MODELU
+================================================================================
+
+WEJScie (24) -> ReLU -> Warstwa ukryta (24) -> Sigmoid -> WYJScie (5)
+
+- Funkcja straty: MSE
+- Wagi klas: TAK (kompensuja niezbalansowanie)
+- Learning rate: 0.05
+- Epochs: 400
+
+================================================================================
+5. WNIOSKI
+================================================================================
+
+1. NAJLEPSZY MODEL: Neural Net Improved (75.10%)
+
+2. KLUCZOWE PARAMETRY:
+   - Neurony ukryte: 24
+   - Funkcja aktywacji: ReLU
+   - Learning rate: 0.05
+   - Wagi klas: TAK
+
+3. Instar NIE NADAJE SIE do tego zadania
+
+4. Grupy A i E najtrudniejsze (za malo danych)
+
+================================================================================
+6. ZRODLA
+================================================================================
+
+[1] Kottek, M., et al. (2006). World Maps of Koppen-Geiger.
+    Meteorologische Zeitschrift, 15(3), 259-263.
+
+[2] Haykin, S. (2009). Neural Networks and Learning Machines.
+    Pearson, 3rd edition.
+
+[3] Kohonen, T. (1982). Self-Organized Formation of 
+    Topologically Correct Feature Maps.
+    Biological Cybernetics, 43(1), 59-69.
+
+================================================================================
